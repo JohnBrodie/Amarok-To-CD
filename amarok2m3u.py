@@ -7,7 +7,7 @@ import sys
 
 from urlparse import urlparse
 from urllib import unquote
-from subprocess import call
+from subprocess import call, check_call, CalledProcessError
 
 def main():
     # Connect to Amarok.
@@ -74,15 +74,26 @@ def main():
 def burn_cd(music):
     tmp_dir = os.path.expanduser('~/currentCD/')
 
+    if not os.path.exists(tmp_dir):
+        os.mkdir(tmp_dir)
+
     # Copy all tracks to tmp dir.
     for f in music:
         if os.path.exists(f):
             os.symlink(f, tmp_dir+os.path.basename(f))
 
-    # TODO: Get return codes or something, check if CD is in drive.
-    call('genisoimage -f -o ~/currentCD.iso %s' % (tmp_dir), shell=True)
+    try:
+        check_call('genisoimage -f -o ~/currentCD.iso %s' % (tmp_dir), shell=True)
+    except CalledProcessError:
+        exit(1)
     shutil.rmtree(tmp_dir)
-    call('wodim ~/currentCD.iso', shell=True)
+
+    try:
+        check_call('wodim ~/currentCD.iso', shell=True)
+    except CalledProcessError:
+        call('notify-send "Playlist Error" "Error burning currentCD.iso. Please attempt manually.\n Playlist reset."', shell=True)
+        exit(1)
+    os.remove(os.path.expanduser('~/currentCD.iso'))
 
 if __name__ == "__main__":
     main()

@@ -74,11 +74,6 @@ def main():
 def burn_cd(music):
     tmp_dir = os.path.expanduser('~/currentCD/')
 
-    # Delete dir if it exists, we don't want extra files, then create dir.
-    if os.path.exists(tmp_dir):
-        shutil.rmtree(tmp_dir)
-    os.mkdir(tmp_dir)
-
     # Copy all tracks to tmp dir.
     for f in music:
         if os.path.exists(f):

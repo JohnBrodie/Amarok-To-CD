@@ -1,0 +1,12 @@
+This script will add tracks to ~/CurrentCD.m3u.  When size >= 700MB, will try to burn an mp3 CD, and clear the playlist.
+
+In KDE: System Settings > Shortcuts and Gestures > Edit > New > Global Shortcut > Command:
+        Trigger Tab: Set shortcut to whatever key combo you wish.
+        Action Tab: Set action to: python $HOME/bin/amarok2m3u.py (or wherever you put this script).
+
+Requires (All available in Debian):
+    Amarok
+    KDE
+    genisoimage
+    wodim
+    notify-send

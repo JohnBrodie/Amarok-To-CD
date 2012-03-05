@@ -34,7 +34,7 @@ def main():
 
     # Read/create playlist.
     file_path = os.path.expanduser('~/currentCD.m3u')
-    f = open(file_path, 'r+')
+    f = open(file_path, 'a+')
     music = [line.strip() for line in f]
 
     # Calculate current playlist size.
